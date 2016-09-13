@@ -15,16 +15,21 @@ function setup() {
 }
 
 function draw() {
+    fill(0);
+    background(0);
+    
     if (! pop){
-        pop = new Population(1);
+        pop = new Population(5);
     }
     
     pop.update();
     pop.show();
     
     pop.lifespan--;
-    if (pop.lifespan == 0){
-        pop = null;
+    if (pop.lifespan === 0){
+        pop.evaluate();
+        pop.crossover();
+        pop.ressurect();
     }
 }
 
@@ -70,7 +75,6 @@ var loop = function(){
     $('.population_number').html(iPopulationNumber);
 }
     
-setInterval(loop, 50);
 
 
 $('.do').click(function(e){
