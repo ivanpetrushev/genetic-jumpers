@@ -1,7 +1,11 @@
 iMutationRate = 1; //%
-iPopulationSize = 200;
+iPopulationSize = 5;
 bFinished = false;
 pop = null;
+population_number = 0;
+ramps = [];
+cnt_ramps = 3;
+current_record = 0;
 
 function setup() {
     iMaxFitness = 0;
@@ -12,69 +16,40 @@ function setup() {
     
     createCanvas(640, 480);
     background(0);
+    
+    ramps = [];
+    for (var i = 0; i < cnt_ramps; i++){
+        ramps.push(new Ramp(i));
+    }
 }
 
 function draw() {
     fill(0);
     background(0);
+    noStroke();
     
     if (! pop){
-        pop = new Population(5);
+        pop = new Population(iPopulationSize);
     }
     
     pop.update();
     pop.show();
+    
+    for (var i = 0; i < ramps.length; i++){
+        ramps[i].show();
+    }
     
     pop.lifespan--;
     if (pop.lifespan === 0){
         pop.evaluate();
         pop.crossover();
         pop.ressurect();
-    }
-}
-
-var loop = function(){
-    if (bFinished) return;
-    
-    // create population
-    var population = [];
-    for (var i = 0; i < iPopulationSize; i++){
-        population[i] = new Monkey(aSpawningPool);
-    }
-
-    // generation phase
-    var aOutput = [];
-    for (var i = 0; i < population.length; i++){
-        population[i].produceLetters();
-        population[i].calculateFitness();
         
-        aOutput.push('monkey ' + i + ': '+population[i].letters.join('') + ' : ' + population[i].fitness + '%');
+        $('.population_number').html(population_number++);
+        $('.record').html(current_record);
     }
-    $('.output').html(aOutput.join('<br />'))
-    
-    // selection phase
-    for (var i = 0; i < population.length; i++){
-        if (population[i].fitness > iMaxFitness){
-            iMaxFitness = population[i].fitness;
-            aRecordOutput = population[i].letters;
-        }
-    }
-    $('.record').html(aRecordOutput.join('') + ' at ' + iMaxFitness + '%');
-    if (iMaxFitness == 100){
-        bFinished = true;
-    }
-    
-    aSpawningPool = [];
-    for (var i = 0; i < population.length; i++){
-        for (var j = 0; j < population[i].fitness; j++){
-            aSpawningPool.push(population[i].letters);
-        }
-    }
-    
-    iPopulationNumber++;
-    $('.population_number').html(iPopulationNumber);
 }
-    
+
 
 
 $('.do').click(function(e){

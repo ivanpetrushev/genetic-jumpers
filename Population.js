@@ -22,9 +22,24 @@ function Population(cnt){
     }
     
     this.evaluate = function(){
+        $('#fitnesses').empty();
+        var median_fitness = 0;
         for (var i = 0; i < this.members.length; i++){
-            for (var j = 0; j < this.members[i].fitness; j++){
-                this.mating_pool.push(this.members[i].next_genes);
+            median_fitness += this.members[i].fitness;
+        }
+        median_fitness /= this.members.length;
+        median_fitness = int(median_fitness);
+        $('.median_fitness').html(median_fitness);
+        
+        for (var i = 0; i < this.members.length; i++){
+            if (this.members[i].fitness > median_fitness){
+                $('#fitnesses').append('<tr><td><b>Jumper #'+i+':</b> </td><td><b>'+this.members[i].fitness+'</b></td></tr>');
+                for (var j = 0; j < this.members[i].fitness; j++){
+                    this.mating_pool.push(this.members[i].next_genes);
+                }
+            }
+            else {
+                $('#fitnesses').append('<tr><td>Jumper #'+i+': </td><td>'+this.members[i].fitness+'</td></tr>');
             }
         }
     }
@@ -52,6 +67,11 @@ function Population(cnt){
             }
             for (var j = split_mid; j < shorter_parent.length; j++){
                 next_genes[j] = parentB[j];
+            }
+            
+            if (random(100) < iMutationRate){
+                var idx = random(0, next_genes.length);
+                next_genes[idx] = createVector(random(width), -random(height));
             }
             
             this.members.push(new Jumper(next_genes));

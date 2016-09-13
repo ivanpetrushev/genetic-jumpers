@@ -7,11 +7,11 @@
         <table style='margin-bottom: 20px;'>
             <tr>
                 <td>Mutation rate (%, int)</td>
-                <td><input type='number' name='target' value='1'/></td>
+                <td><input type='number' name='mutation' value='1'/></td>
             </tr>
             <tr>
                 <td>Population size</td>
-                <td><input type='number' name='population' value='200'/></td>
+                <td><input type='number' name='population' value='5'/></td>
             </tr>
             <tr>
                 <td></td>
@@ -22,13 +22,26 @@
                 <td><div class='record'></div></td>
             </tr>
             <tr>
+                <td>Median fitness</td>
+                <td><div class='median_fitness'></div></td>
+            </tr>
+            <tr>
                 <td>Population number</td>
                 <td><div class='population_number'></div></td>
             </tr>
         </table>
         
+        <div style="position: fixed; left: 700px;">
+            <h3>Fitness levels</h3>
+            <table id="fitnesses">
+
+            </table>
+        </div>
+        
+        
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
         <script type="text/javascript" src="p5.min.js"></script>
+        <script type="text/javascript" src="Ramp.js"></script>
         <script type="text/javascript" src="Jumper.js"></script>
         <script type="text/javascript" src="Population.js"></script>
         <script type="text/javascript" src="custom.js"></script>
