@@ -40,7 +40,7 @@ function draw() {
     }
     
     pop.lifespan--;
-    if (pop.lifespan === 0){
+    if (pop.lifespan <= 0){
         pop.evaluate();
         pop.crossover();
         pop.ressurect();

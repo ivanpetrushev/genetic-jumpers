@@ -4,18 +4,24 @@ function Jumper(genes){
     this.in_jump = false;
     this.color = color(random(255), random(255), random(255));
     this.min_y = height;
-    this.fitness = 0; // max height inverted
+    this.fitness = 1; 
+    this.is_dead = false;
     
     this.genes = genes || [];
     this.next_genes = [];
     this.jump_counter = 0;
+    this.hit_ramp_on_1st_jump = false;
     this.ramp_jump_score = 0;
+    this.number_hits = 0;
+    this.hit_map = [];
     
     this.applyForce = function(force){
         this.acc.add(force);
     }
     
     this.update = function(){
+        if (this.is_dead) return;
+        
         if (! this.in_jump){
             if (this.genes.length > 0){
                 impulse = this.genes[this.jump_counter];
@@ -28,13 +34,13 @@ function Jumper(genes){
             this.applyForce(impulse);
             this.in_jump = true;
             this.jump_counter++;
+            
         }
         
         var hit_ramp = false;
         
         for (var i = 0; i < ramps.length; i++){
             if (this.hits(ramps[i])){ 
-                hit_ramp = true;
                 if (this.acc.y < 0){ // kill all positive vertical velocity
                     this.acc.y = 0;
                     this.pos.y = ramps[i].h + 20;
@@ -45,13 +51,18 @@ function Jumper(genes){
                     this.acc = createVector(0, 0);
                     this.in_jump = false;
                     this.ramp_jump_score += (i+1) * 10;
+                    
+                    this.number_hits++;
+                    if (this.jump_counter == 1) this.hit_ramp_on_1st_jump = true;
+                    hit_ramp = true;
                 }
             }
         }
+        this.hit_map[this.jump_counter] = hit_ramp;
         
-//        if (! this.in_jump && ! hit_ramp){
-//            this.ramp_jump_score --;
-//        }
+        if (! this.in_jump && ! hit_ramp){
+            this.ramp_jump_score --;
+        }
         
         if (this.in_jump){
             this.applyForce(createVector(0, 1)); // gravity
@@ -60,37 +71,46 @@ function Jumper(genes){
         
         this.constrain_to_screen();
         
-        // keep track how high we got
-//        if (this.pos.y < this.min_y){
-//            this.min_y = this.pos.y;
-//            this.fitness = map(this.min_y, 0, height, 100, 0);
-//            this.fitness = round(this.fitness);
-//            this.fitness += this.ramp_jump_score * 10;
-            this.fitness = this.ramp_jump_score;
-            
-            if (this.fitness > current_record) current_record = this.fitness;
-//        }
+    }
+    
+    this.evaluate = function(){
+        stop_detected = false;
+        this.fitness = 0;
+        for (var i = 1; i < this.hit_map.length; i++){
+            if (this.hit_map[i] == false) {
+                stop_detected = true;
+                break;
+            }
+            if (! stop_detected){
+                this.fitness++;
+            }
+        }
+//        console.log(this.hit_map, this.fitness)
+        
+        if (this.fitness > current_record) current_record = this.fitness;
     }
     
     this.constrain_to_screen = function(){
         // don't get outside the screen
         if (this.pos.y > height){ // on floor
-            this.in_jump = false;
-            this.acc = createVector(0, 0);
-            this.pos.y = height;
+            this.is_dead = true;
+//            this.in_jump = false;
+//            this.acc = createVector(0, 0);
+//            this.pos.y = height;
         }
         if (this.pos.x > width){ // on left
-            this.pos.x = width;
+            this.is_dead = true;
+//            this.pos.x = width;
         }
         if (this.pos.x < 0){ // on right
-            this.pos.x = 0;
+            this.is_dead = true;
+//            this.pos.x = 0;
         }
         // do we care about shooting above top? probably not
     }
     
     this.show = function(){
         fill(this.color);
-//        console.log('show at', this.pos)
         ellipse(this.pos.x, this.pos.y, 30, 30);
     }
     

@@ -10,8 +10,14 @@ function Population(cnt){
     }
     
     this.update = function(){
+        cnt_dead = 0;
         for (var i = 0; i < this.members.length; i++){
             this.members[i].update();
+            if (this.members[i].is_dead) cnt_dead++;
+        }
+
+        if (this.members.length == cnt_dead){
+            this.lifespan = 0;
         }
     }
     
@@ -22,11 +28,13 @@ function Population(cnt){
     }
     
     this.evaluate = function(){
+        console.log('evaluate population')
         $('#fitnesses').empty();
         $('#fitnesses').append('<tr><th>Jumper</th><th>Fitness</th><th>Ramp jump score</th></tr>');
 
         var median_fitness = 0;
         for (var i = 0; i < this.members.length; i++){
+            this.members[i].evaluate();
             median_fitness += this.members[i].fitness;
         }
         median_fitness /= this.members.length;
@@ -34,14 +42,10 @@ function Population(cnt){
         $('.median_fitness').html(median_fitness);
         
         for (var i = 0; i < this.members.length; i++){
-            if (this.members[i].fitness > median_fitness){
-                $('#fitnesses').append('<tr><td><b>#'+i+':</b> </td><td><b>'+this.members[i].fitness+'</b></td><td>'+this.members[i].ramp_jump_score+'</td></tr>');
-                for (var j = 0; j < this.members[i].fitness; j++){
-                    this.mating_pool.push(this.members[i].next_genes);
-                }
-            }
-            else {
-                $('#fitnesses').append('<tr><td>#'+i+': </td><td>'+this.members[i].fitness+'</td><td>'+this.members[i].ramp_jump_score+'</td></tr>');
+//            console.log(this.members[i].hit_map)
+            $('#fitnesses').append('<tr><td>#'+i+': </td><td>'+this.members[i].fitness+'</td><td>'+this.members[i].ramp_jump_score+'</td></tr>');
+            for (var j = 0; j < this.members[i].fitness; j++){
+                this.mating_pool.push(this.members[i].next_genes);
             }
         }
     }
