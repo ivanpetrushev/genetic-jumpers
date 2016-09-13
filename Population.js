@@ -69,7 +69,7 @@ function Population(cnt){
                 shorter_parent = parentA;
             }
             
-            var split_mid = random(shorter_parent);
+            var split_mid = random(shorter_parent.length);
             for (var j = 0; j < split_mid; j++){
                 next_genes[j] = parentA[j];
             }

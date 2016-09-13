@@ -37,10 +37,12 @@ function Jumper(genes){
         for (var i = 0; i < ramps.length; i++){
             if (this.hits(ramps[i])){ 
                 if (this.acc.y < 0){ // kill all positive vertical velocity
+                    console.log('hit below')
                     this.acc.y = 0;
                     this.pos.y = ramps[i].h + 20;
                 }
                 else {
+                    console.log('hit above')
                     this.pos.y = ramps[i].h - 20;
                     this.acc = createVector(0, 0);
                     this.in_jump = false;
