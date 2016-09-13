@@ -1,5 +1,5 @@
 iMutationRate = 1; //%
-iPopulationSize = 5;
+iPopulationSize = 10;
 bFinished = false;
 pop = null;
 population_number = 0;

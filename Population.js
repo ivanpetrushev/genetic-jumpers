@@ -23,6 +23,8 @@ function Population(cnt){
     
     this.evaluate = function(){
         $('#fitnesses').empty();
+        $('#fitnesses').append('<tr><th>Jumper</th><th>Fitness</th><th>Ramp jump score</th></tr>');
+
         var median_fitness = 0;
         for (var i = 0; i < this.members.length; i++){
             median_fitness += this.members[i].fitness;
@@ -33,13 +35,13 @@ function Population(cnt){
         
         for (var i = 0; i < this.members.length; i++){
             if (this.members[i].fitness > median_fitness){
-                $('#fitnesses').append('<tr><td><b>Jumper #'+i+':</b> </td><td><b>'+this.members[i].fitness+'</b></td></tr>');
+                $('#fitnesses').append('<tr><td><b>#'+i+':</b> </td><td><b>'+this.members[i].fitness+'</b></td><td>'+this.members[i].ramp_jump_score+'</td></tr>');
                 for (var j = 0; j < this.members[i].fitness; j++){
                     this.mating_pool.push(this.members[i].next_genes);
                 }
             }
             else {
-                $('#fitnesses').append('<tr><td>Jumper #'+i+': </td><td>'+this.members[i].fitness+'</td></tr>');
+                $('#fitnesses').append('<tr><td>#'+i+': </td><td>'+this.members[i].fitness+'</td><td>'+this.members[i].ramp_jump_score+'</td></tr>');
             }
         }
     }
