@@ -3,16 +3,12 @@ function Jumper(genes){
     this.acc = createVector(0, 0);
     this.in_jump = false;
     this.color = color(random(255), random(255), random(255));
-    this.min_y = height;
     this.fitness = 1; 
     this.is_dead = false;
     
     this.genes = genes || [];
     this.next_genes = [];
     this.jump_counter = 0;
-    this.hit_ramp_on_1st_jump = false;
-    this.ramp_jump_score = 0;
-    this.number_hits = 0;
     this.hit_map = [];
     
     this.applyForce = function(force){
@@ -34,7 +30,6 @@ function Jumper(genes){
             this.applyForce(impulse);
             this.in_jump = true;
             this.jump_counter++;
-            
         }
         
         var hit_ramp = false;
@@ -44,25 +39,17 @@ function Jumper(genes){
                 if (this.acc.y < 0){ // kill all positive vertical velocity
                     this.acc.y = 0;
                     this.pos.y = ramps[i].h + 20;
-//                    this.ramp_jump_score -= 50;
                 }
                 else {
                     this.pos.y = ramps[i].h - 20;
                     this.acc = createVector(0, 0);
                     this.in_jump = false;
-                    this.ramp_jump_score += (i+1) * 10;
                     
-                    this.number_hits++;
-                    if (this.jump_counter == 1) this.hit_ramp_on_1st_jump = true;
                     hit_ramp = true;
                 }
             }
         }
         this.hit_map[this.jump_counter] = hit_ramp;
-        
-        if (! this.in_jump && ! hit_ramp){
-            this.ramp_jump_score --;
-        }
         
         if (this.in_jump){
             this.applyForce(createVector(0, 1)); // gravity
@@ -70,11 +57,10 @@ function Jumper(genes){
         this.pos.add(this.acc);
         
         this.constrain_to_screen();
-        
     }
     
     this.evaluate = function(){
-        stop_detected = false;
+        var stop_detected = false;
         this.fitness = 0;
         for (var i = 1; i < this.hit_map.length; i++){
             if (this.hit_map[i] == false) {
@@ -85,25 +71,18 @@ function Jumper(genes){
                 this.fitness++;
             }
         }
-//        console.log(this.hit_map, this.fitness)
-        
     }
     
     this.constrain_to_screen = function(){
         // don't get outside the screen
         if (this.pos.y > height){ // on floor
             this.is_dead = true;
-//            this.in_jump = false;
-//            this.acc = createVector(0, 0);
-//            this.pos.y = height;
         }
         if (this.pos.x > width){ // on left
             this.is_dead = true;
-//            this.pos.x = width;
         }
         if (this.pos.x < 0){ // on right
             this.is_dead = true;
-//            this.pos.x = 0;
         }
         // do we care about shooting above top? probably not
     }

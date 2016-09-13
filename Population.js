@@ -38,16 +38,17 @@ function Population(cnt){
         }
         var median_fitness = sum_fitness / this.members.length;
         median_fitness = int(median_fitness);
-//        $('.median_fitness').html(median_fitness);
         $('.sum_fitness').html(sum_fitness);
         
         if (sum_fitness > current_record) current_record = sum_fitness;
         
+        this.mating_pool = [];
         for (var i = 0; i < this.members.length; i++){
-//            console.log(this.members[i].hit_map)
-            $('#fitnesses').append('<tr><td>#'+i+': </td><td>'+this.members[i].fitness+'</td><td>'+this.members[i].ramp_jump_score+'</td></tr>');
-            for (var j = 0; j < this.members[i].fitness; j++){
-                this.mating_pool.push(this.members[i].next_genes);
+            $('#fitnesses').append('<tr><td>#'+i+': </td><td>'+this.members[i].fitness+'</td></tr>');
+            if (this.members[i].fitness > 0){
+                for (var j = 0; j < this.members[i].fitness; j++){
+                    this.mating_pool.push(this.members[i].next_genes);
+                }
             }
         }
     }
@@ -67,7 +68,6 @@ function Population(cnt){
                 longer_parent = parentB;
                 shorter_parent = parentA;
             }
-//            var genes_diff_cnt = longer_parent.length - shorter_parent.length;
             
             var split_mid = random(shorter_parent);
             for (var j = 0; j < split_mid; j++){
