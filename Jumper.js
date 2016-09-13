@@ -25,8 +25,8 @@ function Jumper(genes){
             else {
                 var impulse = createVector(random(-width/2, width/2), -random(this.pos.y, height));
                 impulse.setMag(17);
-                this.next_genes.push(impulse); // save for further generations
             }
+            this.next_genes.push(impulse); // save for further generations
             this.applyForce(impulse);
             this.in_jump = true;
             this.jump_counter++;
@@ -83,6 +83,10 @@ function Jumper(genes){
         }
         if (this.pos.x < 0){ // on right
             this.is_dead = true;
+        }
+        
+        if (this.is_dead){ // remove the defective gene
+            this.next_genes.splice(this.jump_counter-1, 1);
         }
         // do we care about shooting above top? probably not
     }

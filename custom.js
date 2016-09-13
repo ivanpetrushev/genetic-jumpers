@@ -1,4 +1,4 @@
-iMutationRate = 3; //%
+iMutationRate = 1; //%
 iPopulationSize = 10;
 bFinished = false;
 pop = null;
@@ -61,8 +61,17 @@ $('.do').click(function(e){
     
     iPopulationSize = parseInt($('input[name="population"]').val());
     if (isNaN(iPopulationSize)){
-        iPopulationSize = 200;
+        iPopulationSize = 10;
     }
     
     setup();
+})
+
+$('.pause').click(function(){
+    console.log('PAUSED');
+    noLoop();
+})
+$('.resume').click(function(){
+    console.log('RESUMED');
+    loop();
 })
