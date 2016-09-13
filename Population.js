@@ -4,6 +4,7 @@ function Population(cnt){
     
     this.members = [];
     this.mating_pool = [];
+    this.last_mating_pool = [];
     
     for (var i = 0; i < this.cnt; i++){
         this.members.push(new Jumper());
@@ -50,6 +51,13 @@ function Population(cnt){
                     this.mating_pool.push(this.members[i].next_genes);
                 }
             }
+        }
+        
+        if (this.mating_pool.length > 0){
+            this.last_mating_pool = this.mating_pool; 
+        }
+        else {
+            this.mating_pool = this.last_mating_pool; 
         }
     }
     
