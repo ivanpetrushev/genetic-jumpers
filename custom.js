@@ -1,4 +1,4 @@
-iMutationRate = 1; //%
+iMutationRate = 3; //%
 iPopulationSize = 10;
 bFinished = false;
 pop = null;

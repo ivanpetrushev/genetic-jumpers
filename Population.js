@@ -59,6 +59,7 @@ function Population(cnt){
             var next_genes = [];
             var parentA = random(this.mating_pool);
             var parentB = random(this.mating_pool);
+            
             var longer_parent, shorter_parent;
             if (parentA.length > parentB.length){
                 longer_parent = parentA;
@@ -69,18 +70,22 @@ function Population(cnt){
                 shorter_parent = parentA;
             }
             
-            var split_mid = random(shorter_parent.length);
+            var split_mid = int(random(0, shorter_parent.length));
             for (var j = 0; j < split_mid; j++){
                 next_genes[j] = parentA[j];
+                if (random(100) < iMutationRate){
+                    next_genes[j].rotate(random(-HALF_PI, HALF_PI));
+//                    next_genes[j] = createVector(random(width), -random(height));
+                }
             }
             for (var j = split_mid; j < shorter_parent.length; j++){
                 next_genes[j] = parentB[j];
+                if (random(100) < iMutationRate){
+                    next_genes[j].rotate(random(-HALF_PI, HALF_PI));
+//                    next_genes[j] = createVector(random(width), -random(height));
+                }
             }
             
-            if (random(100) < iMutationRate){
-                var idx = random(0, next_genes.length);
-                next_genes[idx] = createVector(random(width), -random(height));
-            }
             
             this.members.push(new Jumper(next_genes));
         }
