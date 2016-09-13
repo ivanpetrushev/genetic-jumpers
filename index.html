@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Jumpers</title>
+    </head>
+    <body>
+        <table style='margin-bottom: 20px;'>
+            <tr>
+                <td>Mutation rate (%, int)</td>
+                <td><input type='number' name='target' value='1'/></td>
+            </tr>
+            <tr>
+                <td>Population size</td>
+                <td><input type='number' name='population' value='200'/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type='button' class='do' value='Go'/></td>
+            </tr>
+            <tr>
+                <td>Current record</td>
+                <td><div class='record'></div></td>
+            </tr>
+            <tr>
+                <td>Population number</td>
+                <td><div class='population_number'></div></td>
+            </tr>
+        </table>
+        
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script type="text/javascript" src="p5.min.js"></script>
+        <script type="text/javascript" src="Jumper.js"></script>
+        <script type="text/javascript" src="Population.js"></script>
+        <script type="text/javascript" src="custom.js"></script>
+    </body>
+</html>
