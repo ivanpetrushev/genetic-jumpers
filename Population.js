@@ -28,7 +28,6 @@ function Population(cnt){
     }
     
     this.evaluate = function(){
-        console.log('evaluate population')
         $('#fitnesses').empty();
         $('#fitnesses').append('<tr><th>Jumper</th><th>Fitness</th><th>Ramp jump score</th></tr>');
 
@@ -39,8 +38,10 @@ function Population(cnt){
         }
         var median_fitness = sum_fitness / this.members.length;
         median_fitness = int(median_fitness);
-        $('.median_fitness').html(median_fitness);
+//        $('.median_fitness').html(median_fitness);
         $('.sum_fitness').html(sum_fitness);
+        
+        if (sum_fitness > current_record) current_record = sum_fitness;
         
         for (var i = 0; i < this.members.length; i++){
 //            console.log(this.members[i].hit_map)

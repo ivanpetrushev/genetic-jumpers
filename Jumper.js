@@ -87,7 +87,6 @@ function Jumper(genes){
         }
 //        console.log(this.hit_map, this.fitness)
         
-        if (this.fitness > current_record) current_record = this.fitness;
     }
     
     this.constrain_to_screen = function(){
