@@ -1,6 +1,6 @@
 function Population(cnt){
     this.cnt = cnt;
-    this.lifespan = 200;
+    this.lifespan = 300;
     
     this.members = [];
     this.mating_pool = [];
@@ -32,14 +32,15 @@ function Population(cnt){
         $('#fitnesses').empty();
         $('#fitnesses').append('<tr><th>Jumper</th><th>Fitness</th><th>Ramp jump score</th></tr>');
 
-        var median_fitness = 0;
+        var sum_fitness = 0;
         for (var i = 0; i < this.members.length; i++){
             this.members[i].evaluate();
-            median_fitness += this.members[i].fitness;
+            sum_fitness += this.members[i].fitness;
         }
-        median_fitness /= this.members.length;
+        var median_fitness = sum_fitness / this.members.length;
         median_fitness = int(median_fitness);
         $('.median_fitness').html(median_fitness);
+        $('.sum_fitness').html(sum_fitness);
         
         for (var i = 0; i < this.members.length; i++){
 //            console.log(this.members[i].hit_map)
@@ -85,6 +86,6 @@ function Population(cnt){
     }
     
     this.ressurect = function(){
-        this.lifespan = 200;
+        this.lifespan = 300;
     }
 }
